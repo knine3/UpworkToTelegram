@@ -6,16 +6,13 @@ class StateManager:
         self.file = file
 
     def add_value_by_key(self, key, value):
-        d = shelve.open(self.file)
-        d[key] = value
-        d.close()
+        with shelve.open(self.file) as d:
+            d[key] = value
 
     def get_value_from_key(self, key):
-        d = shelve.open(self.file)
-        if key in d:
-            value = d[key]
-            d.close()
-            return value
-        else:
-            d.close()
-            return False
+        with shelve.open(self.file) as d:
+            if key in d:
+                value = d[key]
+                return value
+            else:
+                return False
